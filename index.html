@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alamak - Rizky Febian | Romantis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #8a2be2, #ff69b4, #ffb6c1);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Efek latar belakang romantis */
+        .background-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .floating-heart {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-image: url('icon/heart.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+            animation: float 8s infinite ease-in-out;
+            opacity: 0.8;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.7;
+            }
+
+            25% {
+                transform: translateY(-15px) rotate(5deg);
+            }
+
+            50% {
+                transform: translateY(-25px) rotate(0deg);
+                opacity: 1;
+            }
+
+            75% {
+                transform: translateY(-15px) rotate(-5deg);
+            }
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container:before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            z-index: -1;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.8rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            font-weight: 700;
+            background: linear-gradient(45deg, #fff, #ffd1dc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            text-align: center;
+            margin-bottom: 35px;
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-style: italic;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .player-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .album-art {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            animation: rotate 25s linear infinite;
+            animation-play-state: paused;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+        }
+
+        .album-art.playing {
+            animation-play-state: running;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .album-art img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .song-info {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .song-title {
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .song-artist {
+            font-size: 1.4rem;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.25);
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.15);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .play-btn {
+            width: 80px;
+            height: 80px;
+            font-size: 2rem;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .progress-container {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 8px;
+            cursor: pointer;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #ff69b4, #ffb6c1);
+            width: 0%;
+            transition: width 0.1s linear;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.7);
+        }
+
+        .time-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 15px;
+        }
+
+        .volume-slider {
+            width: 120px;
+            -webkit-appearance: none;
+            height: 6px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .lyrics-section {
+            max-height: 350px;
+            overflow-y: auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 15px;
+            margin-top: 25px;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .lyrics-section::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .lyrics-section::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .lyrics-section::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .lyrics-container {
+            text-align: center;
+            line-height: 2;
+            transition: transform 0.5s ease;
+        }
+
+        .lyric-line {
+            margin-bottom: 15px;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            padding: 5px 10px;
+            border-radius: 8px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lyric-line.active {
+            opacity: 1;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .romantic-quote {
+            text-align: center;
+            margin-top: 25px;
+            font-style: italic;
+            opacity: 0.8;
+            font-size: 1.1rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .heart-icon {
+            width: 20px;
+            height: 20px;
+            background-image: url('icon/heart.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            filter: brightness(0) invert(1);
+        }
+
+        .auto-scroll-indicator {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            backdrop-filter: blur(10px);
+        }
+
+        .auto-scroll-indicator i {
+            color: #ff69b4;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .album-art {
+                width: 220px;
+                height: 220px;
+            }
+
+            .song-title {
+                font-size: 1.8rem;
+            }
+
+            .lyric-line {
+                font-size: 1.1rem;
+            }
+
+            .lyric-line.active {
+                font-size: 1.3rem;
+            }
+
+            .floating-heart {
+                width: 25px;
+                height: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-effect" id="hearts-container"></div>
+
+    <div class="container">
+        <h1>Alamak</h1>
+        <p class="subtitle">Rizky Febian - Romantis</p>
+
+        <div class="player-section">
+            <div class="album-art">
+                <img id="album-cover" src="cover/Alamak_albumcover.jpg" alt="Album Art Alamak">
+            </div>
+
+            <div class="song-info">
+                <div class="song-title">Alamak</div>
+                <div class="song-artist">Rizky Febian</div>
+            </div>
+
+            <div class="controls">
+                <button class="control-btn play-btn" id="play-btn">
+                    <i class="fas fa-play"></i>
+                </button>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <div class="time-info">
+                    <span id="current-time">0:00</span>
+                    <span id="duration">0:00</span>
+                </div>
+            </div>
+
+            <div class="volume-control">
+                <span><i class="fas fa-volume-up"></i></span>
+                <input type="range" min="0" max="1" step="0.01" value="1" class="volume-slider" id="volume-slider">
+            </div>
+        </div>
+
+        <div class="lyrics-section">
+            <div class="auto-scroll-indicator">
+                <i class="fas fa-magic"></i> Auto Scroll
+            </div>
+            <div class="lyrics-container" id="lyrics-container">
+                <!-- Lirik akan ditampilkan di sini -->
+                <div class="lyric-line">Memuat lirik...</div>
+            </div>
+        </div>
+
+        <div class="romantic-quote">
+            <div class="heart-icon"></div>
+            "Cinta adalah ketika kamu menemukan seseorang yang membuatmu merasa lengkap"
+            <div class="heart-icon"></div>
+        </div>
+    </div>
+
+    <audio id="audio-player" src="audio/Alamak.mp3"></audio>
+
+    <script>
+        // Elemen DOM
+        const audioPlayer = document.getElementById('audio-player');
+        const playBtn = document.getElementById('play-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const progress = document.getElementById('progress');
+        const currentTimeEl = document.getElementById('current-time');
+        const durationEl = document.getElementById('duration');
+        const lyricsContainer = document.getElementById('lyrics-container');
+        const albumArt = document.querySelector('.album-art');
+        const volumeSlider = document.getElementById('volume-slider');
+        const heartsContainer = document.getElementById('hearts-container');
+
+        // Data lirik "Alamak" - Rizky Febian dengan timing yang tepat dari SRT
+        const alamakLyrics = [
+            { time: 0.62, text: "[Musik]" },
+            { time: 11.6, text: "Ulah siapa yang bisa buatku begini?" },
+            { time: 16.68, text: "Gila ini bahagia apa menderita?" },
+            { time: 21.72, text: "Langit lagi bagus-bagusnya." },
+            { time: 24.28, text: "Tapi bagiku biasa saja. Dia buatku" },
+            { time: 28.88, text: "terkesima." },
+            { time: 30.56, text: "Menyapamu tak berani menciummu? Apalagi" },
+            { time: 35.76, text: "mata, pundak, lutut, kaki gemetarku" },
+            { time: 39.6, text: "berdiri. Kalau sampai kumiliki tak mau" },
+            { time: 44.04, text: "ku tidur lagi. Alamat malah nanti kau" },
+            { time: 48.48, text: "pergi." },
+            { time: 50.28, text: "Kalau ada" },
+            { time: 52.76, text: "sembilan nyawa" },
+            { time: 55.32, text: "mau samamu saja semuanya" },
+            { time: 60.52, text: "ini dada." },
+            { time: 63.12, text: "Isinya kamu semua" },
+            { time: 67.45, text: "[Musik]" },
+            { time: 69.08, text: "Alamak, ini kah jatuh cinta?" },
+            { time: 73.54, text: "[Musik]" },
+            { time: 74.76, text: "Apa kamu sayang, apa khayalan? Cubit aku" },
+            { time: 78.28, text: "sekarang" },
+            { time: 80.4, text: "buat mabuk kepayang, seketika pingsan, mana nafas" },
+            { time: 83.28, text: "buatan? Can I see you for a minute? boleh aku" },
+            { time: 86.8, text: "visit? See your mom and dad aku pamit, kalau memang" },
+            { time: 89.72, text: "naga-naganya kau berkenan, Ku" },
+            { time: 92.16, text: "berangkat sekarang. Menyapamu" },
+            { time: 95.52, text: "tak berani. Menciummu? Apalagi. Mata pundak" },
+            { time: 100.84, text: "lutut kaki gemetarku berdiri. Kalau" },
+            { time: 105.08, text: "sampai kumiliki tak mau ku tidur lagi." },
+            { time: 109.96, text: "Alamat malah nanti kau pergi." },
+            { time: 114.2, text: "Kalau ada, sembilan nyawa. Mau samamu saja" },
+            { time: 119.64, text: "alamak ku jatuh cinta." },
+            { time: 122.48, text: "semuanya" },
+            { time: 124.4, text: "Ini dada isinya kamu semua" },
+            { time: 132.88, text: "Alamak, inikah jatuh cinta?" },
+            { time: 137.24, text: "Minimal kau bilang" },
+            { time: 139.84, text: "bila kau tak sayang" },
+            { time: 143.04, text: "biar kutahan perasaan" },
+            { time: 147.76, text: "Jadi berhenti kau menatap, karena ku tak" },
+            { time: 151.24, text: "kuat, tak kuat, tak kuat berharap. Kalau ada sembilan nyawa, mau" },
+            { time: 160.64, text: "samamu saja semuanya." },
+            { time: 165.12, text: "Coba buka" },
+            { time: 167.72, text: "isinya kamu semua." },
+            { time: 172.78, text: "Oh gawat ini ku jatuh cinta" },
+            { time: 174.32, text: "Kalau ada, sembilan nyawa, mau samamu." },
+            { time: 181.88, text: "(Langit kalah mempesona)" },
+            { time: 185.48, text: "Tak mau yang lain-lainnya" },
+            { time: 186.84, text: "Ini dada" },
+            { time: 188.16, text: "isinya kamu semua" },
+            { time: 192.68, text: "semuanya" },
+            { time: 194.16, text: "Alamak inikah jatuh cinta?" },
+            { time: 197.92, text: "gila" },
+            { time: 199.44, text: "Naga-naganya ku telah jatuh cinta" },
+            { time: 205.2, text: "Alamak, inikah jatuh cinta?" }
+        ];
+
+        let isPlaying = false;
+        let currentLyrics = alamakLyrics;
+        let autoScrollEnabled = true;
+        let userScrolling = false;
+        let scrollTimeout;
+
+        // Membuat efek hati menggunakan icon
+        function createHearts() {
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('floating-heart');
+
+                // Posisi acak
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = Math.random() * 100 + 'vh';
+
+                // Ukuran acak
+                const size = Math.random() * 20 + 15;
+                heart.style.width = size + 'px';
+                heart.style.height = size + 'px';
+
+                // Animasi delay acak
+                heart.style.animationDelay = Math.random() * 8 + 's';
+
+                // Opacity acak
+                heart.style.opacity = Math.random() * 0.5 + 0.3;
+
+                heartsContainer.appendChild(heart);
+            }
+        }
+
+        // Format waktu (detik ke menit:detik)
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // Memuat lagu
+        function loadSong() {
+            // Render lirik
+            renderLyrics(currentLyrics);
+
+            // Reset progress
+            progress.style.width = '0%';
+            currentTimeEl.textContent = '0:00';
+
+            // Tunggu metadata dimuat untuk mendapatkan durasi
+            audioPlayer.addEventListener('loadedmetadata', () => {
+                durationEl.textContent = formatTime(audioPlayer.duration);
+            }, { once: true });
+        }
+
+        // Render lirik
+        function renderLyrics(lyrics) {
+            lyricsContainer.innerHTML = '';
+            lyrics.forEach(lyric => {
+                const lyricLine = document.createElement('div');
+                lyricLine.className = 'lyric-line';
+                lyricLine.textContent = lyric.text;
+                lyricLine.dataset.time = lyric.time;
+                lyricsContainer.appendChild(lyricLine);
+            });
+        }
+
+        // Auto-scroll ke lirik aktif
+        function scrollToActiveLyric() {
+            if (!autoScrollEnabled || userScrolling) return;
+
+            const activeLine = document.querySelector('.lyric-line.active');
+            if (activeLine) {
+                const lyricsSection = document.querySelector('.lyrics-section');
+                const containerHeight = lyricsSection.clientHeight;
+                const lineHeight = activeLine.offsetHeight;
+                const lineTop = activeLine.offsetTop;
+
+                // Hitung posisi scroll untuk menempatkan lirik aktif di tengah
+                const targetScroll = lineTop - (containerHeight / 2) + (lineHeight / 2);
+
+                // Smooth scroll ke posisi
+                lyricsSection.scrollTo({
+                    top: targetScroll,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // Memperbarui lirik aktif berdasarkan waktu
+        function updateActiveLyric() {
+            const currentTime = audioPlayer.currentTime;
+            const lyricLines = document.querySelectorAll('.lyric-line');
+
+            let activeLine = null;
+
+            // Cari lirik yang sesuai dengan waktu saat ini
+            for (let i = lyricLines.length - 1; i >= 0; i--) {
+                const lineTime = parseFloat(lyricLines[i].dataset.time);
+                if (currentTime >= lineTime) {
+                    activeLine = lyricLines[i];
+                    break;
+                }
+            }
+
+            // Hapus kelas aktif dari semua lirik
+            lyricLines.forEach(line => {
+                line.classList.remove('active');
+            });
+
+            // Tambahkan kelas aktif ke lirik yang sesuai
+            if (activeLine) {
+                activeLine.classList.add('active');
+
+                // Auto-scroll ke lirik aktif
+                if (autoScrollEnabled && !userScrolling) {
+                    scrollToActiveLyric();
+                }
+            }
+        }
+
+        // Memperbarui progress bar
+        function updateProgress() {
+            const { currentTime, duration } = audioPlayer;
+            const progressPercent = (currentTime / duration) * 100;
+            progress.style.width = `${progressPercent}%`;
+            currentTimeEl.textContent = formatTime(currentTime);
+
+            // Perbarui lirik aktif
+            updateActiveLyric();
+        }
+
+        // Atur progress bar saat diklik
+        function setProgress(e) {
+            const width = this.clientWidth;
+            const clickX = e.offsetX;
+            const duration = audioPlayer.duration;
+
+            audioPlayer.currentTime = (clickX / width) * duration;
+        }
+
+        // Putar atau jeda lagu
+        function togglePlay() {
+            if (isPlaying) {
+                pauseSong();
+            } else {
+                playSong();
+            }
+        }
+
+        // Putar lagu
+        function playSong() {
+            isPlaying = true;
+            playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            albumArt.classList.add('playing');
+            audioPlayer.play();
+        }
+
+        // Jeda lagu
+        function pauseSong() {
+            isPlaying = false;
+            playBtn.innerHTML = '<i class="fas fa-play"></i>';
+            albumArt.classList.remove('playing');
+            audioPlayer.pause();
+        }
+
+        // Atur volume
+        function setVolume() {
+            audioPlayer.volume = volumeSlider.value;
+        }
+
+        // Deteksi ketika user melakukan scroll manual
+        function handleUserScroll() {
+            userScrolling = true;
+
+            // Clear timeout sebelumnya
+            clearTimeout(scrollTimeout);
+
+            // Set timeout untuk mengaktifkan kembali auto-scroll setelah 3 detik
+            scrollTimeout = setTimeout(() => {
+                userScrolling = false;
+            }, 3000);
+        }
+
+        // Event listeners
+        playBtn.addEventListener('click', togglePlay);
+        audioPlayer.addEventListener('timeupdate', updateProgress);
+        audioPlayer.addEventListener('ended', () => {
+            pauseSong();
+            audioPlayer.currentTime = 0;
+            updateProgress();
+        });
+        progressBar.addEventListener('click', setProgress);
+        volumeSlider.addEventListener('input', setVolume);
+
+        // Deteksi scroll manual user
+        document.querySelector('.lyrics-section').addEventListener('scroll', handleUserScroll);
+
+        // Muat lagu saat halaman dimuat
+        window.addEventListener('load', () => {
+            createHearts();
+            loadSong();
+            // Set durasi setelah audio dimuat
+            audioPlayer.addEventListener('loadedmetadata', () => {
+                durationEl.textContent = formatTime(audioPlayer.duration);
+            });
+        });
+    </script>
+</body>
+
+</html>
