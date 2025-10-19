@@ -58,4 +58,21 @@ Player musik romantis untuk lagu "Alamak" oleh Rizky Febian dengan fitur lirik s
 - **JavaScript** - Logika player dan sinkronisasi lirik  
 - **Font Awesome** - Ikon kontrol player
 
-## 📁 Struktur File
+## 🎵 Tentang Lagu
+
+**"Alamak"** oleh **Rizky Febian** adalah lagu romantis yang menceritakan tentang perasaan jatuh cinta yang membuat seseorang merasa terkesima dan berdebar-debar.
+
+## 🌟 Keunikan
+
+- Dibuat khusus untuk satu lagu (Alamak) dengan pengalaman yang optimal
+- Timing lirik yang presisi
+- Interface yang minimalis dan fokus pada konten
+- Efek visual yang memperkuat nuansa romantis lagu
+
+## 📞 Kontak
+
+Dibuat dengan ❤️ untuk penggemar musik Indonesia.
+
+---
+
+*"Alamak, inikah jatuh cinta?"* - Rizky Febian
